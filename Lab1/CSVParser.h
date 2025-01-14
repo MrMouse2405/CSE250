@@ -10,6 +10,7 @@
  * Utility class for parsing CSV Files
  *
  */
+
 #define DELIMETER ","
 
 namespace Lab1
