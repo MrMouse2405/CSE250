@@ -123,6 +123,7 @@ void bench(std::string name)
     using std::chrono::duration_cast;
     using std::chrono::milliseconds;
     using std::chrono::steady_clock;
+    using std::chrono::seconds;
 
     auto data = std::make_shared<FlightsList>();
 
@@ -133,14 +134,26 @@ void bench(std::string name)
 
     auto start = steady_clock::now();
     sort(data);
-    auto duration = duration_cast<milliseconds>(steady_clock::now() - start).count();
-    std::cout << name << " SORTING took " << duration << "ms" << std::endl;
+    auto duration = duration_cast<seconds>(steady_clock::now() - start).count();
+    if (duration > 0) {
+        std::cout << name << " SORTING took " << duration << "s" << std::endl;
+    }
+    else {
+        std::cout << name << " SORTING took " << duration_cast<milliseconds>(steady_clock::now() - start).count() << "ms" << std::endl;
+    }
+
     previewFlights(data);
 
     start = steady_clock::now();
     sort(data);
-    duration = duration_cast<milliseconds>(steady_clock::now() - start).count();
-    std::cout << name << " RESORTING took " << duration << "ms" << std::endl;
+    duration = duration_cast<seconds>(steady_clock::now() - start).count();
+    if (duration > 0) {
+        std::cout << name << " RESORTING took " << duration << "s" << std::endl;
+    }
+    else {
+        std::cout << name << " RESORTING took " << duration_cast<milliseconds>(steady_clock::now() - start).count() << "ms" << std::endl;
+    }
+
     previewFlights(data);
 }
 

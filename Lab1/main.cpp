@@ -29,7 +29,7 @@ using Lab1::List;
  *
  * readCSVFile
  *
- * Reads input from csv file and populates data
+ * @brief Reads input from csv file and populates data
  * array with values. Returns number of rows
  * read from the file.
  *
