@@ -1,28 +1,31 @@
-/****************************************************************************\
- * LinkedList.h
+/******************************************************************************
+ * LinkedList.cpp
  *
  *  Created on:
- *      Author: YOUR NAME
+ *      Author: OCdt Syed
  *
+ *  Implementation details:
+ *     This implementation uses a doubly linked list where the head is stored in
+ *     an optional pointer. The optional wrappers are used to indicate the presence
+ *     or absence of a pointer. Memory for new nodes is allocated with new and freed
+ *     with delete.
  *
- *  Implementation details: ?
- *  \\TODO
- *  You can add your implementation details here or in the header,
- *  or with appropriate variable's or function's comments.
- *
- \***************************************************************************/
+ ******************************************************************************/
 
 #include "LinkedList.h"
 
 #include <iostream>
-#include <assert.h>
+#include <cassert>
+#include <stdexcept>
 using namespace std;
 
 /** Constructs an empty list.  */
-LinkedList::LinkedList() {
-};
+LinkedList::LinkedList()
+	: m_First(nullopt), length(0)
+{
+}
 
-/** Deletes an empty list by freeing nodes memory. */
+/** Deletes the list by repeatedly removing the first element until empty. */
 LinkedList::~LinkedList()
 {
 	while (Length() > 0)
@@ -32,124 +35,112 @@ LinkedList::~LinkedList()
 }
 
 /** Returns the length of the list in O(1).
- * Return: Length of the list
+ *  @return length of the list.
  */
-int LinkedList::Length()
+size_t LinkedList::Length()
 {
-	return this->lenght;
+	return length;
 }
 
-/** Prints all the element of the list using cout, on a single line, separated by a comma. eg: [3, 19, 2, 36].*/
+/** Prints all the elements of the list using cout, on a single line,
+ *  separated by a comma. e.g.: [3,19,2,36].
+ */
 void LinkedList::PrintList()
 {
-
-	if (m_First == nullptr)
+	if (!m_First.has_value())
 	{
 		cout << "[]" << endl;
 		return;
 	}
 
 	cout << "[";
-
 	optional<Node *> walker = m_First;
-	for (;;)
+	bool firstElement = true;
+	while (walker.has_value())
 	{
-		cout << walker.value()->value;
-		walker = walker.value()->next;
-		if (walker.has_value())
+		if (!firstElement)
 		{
 			cout << ",";
 		}
-		else
-		{
-			break;
-		}
+		cout << walker.value()->value;
+		walker = walker.value()->next;
+		firstElement = false;
 	}
-	cout << "]" << endl;
+	cout << "]\n";
 }
 
 /** Inserts a new string in first position in O(1).
- * Args: new_value is the new string to put in the list
+ *  @param new_value the new string to put in the list.
  */
 void LinkedList::InsertFirst(const string &new_value)
 {
-	if (this->lenght == 0)
+	// Create a new node whose next pointer is the current first node.
+	Node *newNode = new Node(new_value, m_First, nullopt);
+
+	// If the list is not empty, update the current first node's previous pointer.
+	if (m_First.has_value())
 	{
-		m_First = optional(new Node(new_value, nullopt, nullopt));
-		return;
+		m_First.value()->prev = newNode;
 	}
-
-	auto toShift = m_First;
-
-	m_First = optional(new Node(new_value, nullopt, m_First));
-	toShift.value()->prev = m_First;
-
-	this->lenght += 1;
+	// Update m_First to point to the new node.
+	m_First = newNode;
+	length++;
 }
 
 /** Removes and returns the first element of the list in O(1).
- * Return: The string removed, or "" if empty
+ *  @return the string removed, or an empty string if the list is empty.
  */
 string LinkedList::RemoveFirst()
 {
-	assert(lenght > -1 && "OUT OF BOUNDS");
-	switch (lenght)
-	{
-	case 0:
+	if (length == 0 || !m_First.has_value())
 	{
 		return "";
 	}
-	break;
-	case 1:
+
+	Node *nodeToRemove = m_First.value();
+	string returnValue = nodeToRemove->value;
+
+	if (nodeToRemove->next.has_value())
 	{
-		assert(m_First.has_value() && "VALUE DOES NOT EXIST!");
-
-		const string toReturn = m_First.value()->value;
-		m_First.reset();
-
-		lenght -= 1;
-		return toReturn;
-	}
-	break;
-	default:
-	{
-		assert(m_First.has_value() && "VALUE DOES NOT EXIST!");
-
-		const string toReturn = m_First.value()->value;
-		const optional<Node *> toShift = m_First.value()->next;
-
-		assert(toShift.has_value() && "NEXT VALUE DOES NOT EXIST!");
-
-		m_First.reset();
-		m_First = toShift;
+		m_First = nodeToRemove->next.value();
 		m_First.value()->prev.reset();
+	}
+	else
+	{
+		m_First.reset();
+	}
 
-		lenght -= 1;
-		return toReturn;
-	}
-	break;
-	}
+	delete nodeToRemove;
+	length--;
+	return returnValue;
 }
 
-/** Returns the string at a given index (1st node at index 0, 2nd at index 1, etc...) in O(n).
- *  Args: index node position =  1st node at index 0, 2nd at index 1, etc...
- *  Return: "" if the index does not exists */
-string LinkedList::GetValueAt(int index)
+/** Returns the string at a given index (0-based indexing).
+ *  If the index does not exist, returns an empty string.
+ *  @param index the index of the node.
+ *  @return the value at that index, or "" if out-of-bounds.
+ */
+string LinkedList::GetValueAt(const size_t index)
 {
-	if (index < 0 || index > lenght)
+	if (index < 0 || index >= length)
 	{
 		return "";
 	}
 
-	auto walker = m_First;
-	for (size_t idx = 0; idx < lenght; idx++)
+	optional<Node *> walker = m_First;
+	for (int idx = 0; idx < index; idx++)
 	{
 		if (!walker.has_value())
 		{
-			throw std::logic_error("Index " + to_string(idx) + " has empty value!");
+			// This situation should not happen.
+			throw std::logic_error("Invalid internal state: missing node at index " + to_string(idx));
 		}
-		walker = m_First.value()->next;
+		walker = walker.value()->next;
 	}
 
+	if (!walker.has_value())
+	{
+		return "";
+	}
 	return walker.value()->value;
 }

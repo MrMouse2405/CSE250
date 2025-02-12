@@ -1,65 +1,63 @@
-/****************************************************************************\
+/******************************************************************************
  * Queue.cpp
  *
  *  Created on:
  *      Author: YOUR NAME
  *
+ *  Implementation details:
+ *      A circular queue implementation using a fixed-size array allocated via
+ *      a const unique_ptr. The queue tracks the index of its first element (m_First)
+ *      and the current number of elements (size). When adding or removing, indices
+ *      wrap around using modulo arithmetic.
  *
- *  Implementation details: ?
- *  \\TODO
- *  You can add your implementation details here or in the header,
- *  or with the appropriate variable's or function's comments.
- *
- \***************************************************************************/
-
+ ******************************************************************************/
 #include <iostream>
+#include <cassert>
+#include <sstream>
+
 #include "Queue.h"
 
 using namespace std;
 
-Queue::Queue(size_t new_max_size) : m_MaxSize(new_max_size), m_Data(new int[new_max_size])
+Queue::Queue(size_t new_max_size)
+    : m_Data(new int[new_max_size]), // Initialize the unique_ptr with a new array.
+      m_MaxSize(new_max_size),
+      m_First(0),
+      size(0)
 {
-    m_First = 0;
-    size = 0;
 }
 
-/** Deletes the queue and free up its memory. */
 Queue::~Queue()
 {
+    // No need to delete m_Data manually because unique_ptr handles it.
 }
 
-/** Indicates whether of not the queue is empty in O(1), true if empty, false if not. */
 bool Queue::IsEmpty()
 {
-    return size < m_MaxSize;
+    return size == 0;
 }
 
-/** Indicates whether of not the queue is full in O(1), true if full, false if not. */
 bool Queue::IsFull()
 {
     return size == m_MaxSize;
 }
 
-/** Prints the content of the queue on a single line, separated by comma, eg: [3, 19, 2, 36]. */
 void Queue::PrintQueue()
 {
-
     if (size == 0)
     {
         cout << "[]" << endl;
+        return;
     }
 
     cout << "[";
     for (size_t idx = 0; idx < size - 1; idx++)
     {
-        cout << m_Data[idx];
-        cout << ",";
+        cout << m_Data[(m_First + idx) % m_MaxSize] << ",";
     }
-    cout << m_Data[size - 1];
-    cout << "]" << endl;
+    cout << m_Data[(m_First + size - 1) % m_MaxSize] << "]" << endl;
 }
 
-/** Inserts an element at the end of the queue, returns true if succeed, and false if the queue is already full. */
 bool Queue::Enqueue(int new_value)
 {
     if (size == m_MaxSize)
@@ -68,22 +66,21 @@ bool Queue::Enqueue(int new_value)
     }
 
     m_Data[(m_First + size) % m_MaxSize] = new_value;
-    size += 1;
+    size++;
     return true;
 }
-/** Removes the element at the front of the queue and returns the element in the argument,
- * returns true if succeed, and false if the queue is already empty.  */
+
 bool Queue::Dequeue(int &old_value)
 {
-
     if (size == 0)
     {
         return false;
     }
 
-    old_value = m_Data[(m_First + size) % m_MaxSize];
-
+    // Retrieve the front element.
+    old_value = m_Data[m_First];
+    // Advance m_First (wrapping around if necessary).
     m_First = (m_First + 1) % m_MaxSize;
-
+    size--;
     return true;
 }

@@ -1,19 +1,18 @@
-/****************************************************************************\
+/******************************************************************************
  * Stack.cpp
  *
  *  Created on:
  *      Author: YOUR NAME
  *
+ *  Implementation details:
+ *      This Stack uses a LinkedList (which is assumed to be a doubly linked list)
+ *      as its underlying container. The top of the stack is the head of the list.
+ *      Push and Pop operate in O(1). The PrintStack method traverses the list
+ *      and prints each element on its own line, from top (head) to bottom.
  *
- *  Implementation details: ?
- *  \\TODO
- *  You can add your implementation details here or in the header,
- *  or with the appropriate variable's or function's comments.
- *
- \***************************************************************************/
+ ******************************************************************************/
 
 #include "Stack.h"
-
 #include <iostream>
 using namespace std;
 
@@ -25,26 +24,31 @@ Stack::Stack() : m_List(LinkedList())
 /** Deletes the stack. */
 Stack::~Stack()
 {
+	// m_List will clean up its nodes via its destructor.
 }
 
 /** Indicates whether the stack is empty in O(1).
- * Returns: true is empty, false if not
+ *  @return true if empty, false otherwise.
  */
 bool Stack::IsEmpty()
 {
 	return m_List.Length() == 0;
 }
 
-/** Prints all the element of the stack using cout, from top to bottom (1 item per line).
- *  WHAT IS THE O() OF YOUR METHOD? EXPLAIN IN YOUR REPORT (or via couts in the main)
+/** Prints all the elements of the stack using cout, from top to bottom (one per line).
+ *  Time Complexity: O(n), where n is the number of elements in the stack.
  */
 void Stack::PrintStack()
 {
-	m_List.PrintList();
+	int len = m_List.Length();
+	for (int i = 0; i < len; i++)
+	{
+		cout << m_List.GetValueAt(i) << "\n";
+	}
 }
 
 /** Adds a string on the top of the stack in O(1).
- * Args: New string to put on top of the stack.
+ *  @param new_value New string to push onto the stack.
  */
 void Stack::Push(const string &new_value)
 {
@@ -52,27 +56,17 @@ void Stack::Push(const string &new_value)
 }
 
 /** Removes and returns the string on the top of the stack in O(1).
- * Return: string on top of the stack or "" if empty.
+ *  @return The string on top of the stack or "" if empty.
  */
 string Stack::Pop()
 {
-	if (m_List.Lenght() == 0)
-	{
-		return string("");
-	}
-
 	return m_List.RemoveFirst();
 }
 
 /** Returns the string on the top of the stack in O(1).
- * Return: String on top of the stack or "" if empty.
- * */
+ *  @return The string on top of the stack or "" if empty.
+ */
 string Stack::Top()
 {
-	if (m_List.Lenght() == 0)
-	{
-		return string("");
-	}
-
 	return m_List.GetValueAt(0);
 }

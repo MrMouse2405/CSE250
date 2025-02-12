@@ -9,13 +9,10 @@
  *
  \***************************************************************************/
 
-#ifndef STACK_H_
-#define STACK_H_
+#pragma once
+#include <string>
 
 #include "LinkedList.h"
-
-#include <string>
-using namespace std;
 
 /** Stack of strings using linked-list. */
 class Stack
@@ -24,7 +21,7 @@ private:
 	/** LinkedList variable (not a pointer), therefore enough space is already allocated
 	 * and the constructor and destructor are automatically called when constructing
 	 * or destructing the Stack object. */
-	unique_ptr<LinkedList> m_List;
+	mutable LinkedList m_List;
 
 public:
 	/** Constructs an empty stack. */
@@ -38,11 +35,9 @@ public:
 	void PrintStack();
 
 	/** Adds a string on the top of the stack in O(1).*/
-	void Push(const string &new_value);
+	void Push(const std::string &new_value);
 	/** Removes and returns the string on the top of the stack in O(1). Returns "" if empty. */
-	string Pop();
+	std::string Pop();
 	/** Returns the string on the top of the stack in O(1). Returns "" if empty .*/
-	string Top();
+	std::string Top();
 };
-
-#endif /* STACK_H_ */

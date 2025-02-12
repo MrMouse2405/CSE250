@@ -9,8 +9,8 @@
  *
  \***************************************************************************/
 
-#include <memory>
 #pragma once
+#include <memory>
 
 /** Queue of integers using an array. */
 class Queue
@@ -18,18 +18,18 @@ class Queue
 
 private:
 	/** Array used as a circular buffer for queue content. */
-	const unique_ptr<int[]> m_Data;
+	const std::unique_ptr<int[]> m_Data;
 	/** Size of the circular buffer. */
-	const size_t m_MaxSize;
+	const std::size_t m_MaxSize;
 	/** TODO PLEASE DESCRIBE */
-	size_t m_First;
+	std::size_t m_First;
 	/** TODO PLEASE DESCRIBE */
-	size_t size;
+	std::size_t size;
 	// TODO: Add other instance variables or helper methods if needed
 
 public:
 	/** Constructs an empty queue of maximum size new_max_size */
-	explicit Queue(size_t new_max_size);
+	explicit Queue(std::size_t new_max_size);
 	/** Deletes the queue and free up its memory. */
 	virtual ~Queue();
 
