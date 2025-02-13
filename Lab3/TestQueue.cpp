@@ -21,7 +21,7 @@ using namespace std;
  * Verifies that the queue is initially empty, not full, and prints as "[]".
  */
 void testEmptyQueue() {
-    Queue q(5);
+    const Queue q(5);
     assert(q.IsEmpty() == true);
     assert(q.IsFull() == false);
     Test::testOutput([&]() { q.PrintQueue(); }, "[]\n");

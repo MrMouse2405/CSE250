@@ -23,8 +23,8 @@ using namespace std;
 void testEmptyStack() {
     Stack<string> s;
     assert(s.IsEmpty() == true);
-    assert(s.Top().value_or("") == "");
-    assert(s.Pop().value_or("") == "");
+    assert(s.Top().value_or("").empty());
+    assert(s.Pop().value_or("").empty());
 }
 
 /**
@@ -54,7 +54,7 @@ void testPushPopTop() {
     val = s.Pop().value_or("");
     assert(val == "first");
     assert(s.IsEmpty() == true);
-    assert(s.Pop().value_or("") == "");
+    assert(s.Pop().value_or("").empty());
 }
 
 /**

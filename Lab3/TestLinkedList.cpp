@@ -55,7 +55,7 @@ void testSingleInsertRemove() {
     assert(list.Length() == 0);
 
     /** Removing again should return an empty string. */
-    assert(list.RemoveFirst().value_or("") == "");
+    assert(list.RemoveFirst().value_or("").empty());
 }
 
 /**

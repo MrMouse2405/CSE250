@@ -46,9 +46,9 @@ void simulation() {
         printQueueStep(queue, "Initial Arrival #" + to_string(member));
     }
 
-    std::random_device rd;
-    std::mt19937 mt(rd());
-    std::uniform_real_distribution<double> dist(0., 1.);
+    random_device rd;
+    mt19937 mt(rd());
+    uniform_real_distribution dist(0., 1.);
 
     for (int i = 0; i <= targetArrivalDepartures; i++) {
         if (dist(mt) > 0.5) {
@@ -74,23 +74,28 @@ void simulation() {
  */
 int main() {
     cout << "-------------------------- Question 1 --------------------------\n";
+    cout << "Queue Implemented\n";
     cout << "-------------------------- Question 2 --------------------------\n";
     cout << "Testing Queue:\n";
     Test::testQueue();
     cout << "-------------------------- Question 3 --------------------------\n";
     simulation();
     cout << "-------------------------- Question 4 --------------------------\n";
+    cout << "Linked List Implemented\n";
     cout << "-------------------------- Question 5 --------------------------\n";
     cout << "Testing Linked List:\n";
     Test::testLinkedList();
     cout << "-------------------------- Question 6 --------------------------\n";
+    cout << "Stack Implemented\n";
     cout << "-------------------------- Question 7 --------------------------\n";
     cout << "Testing Stack:\n";
     Test::testStack();
     cout << "-------------------------- Question 8 --------------------------\n";
+    cout << "Postfix Calculator Implemented\n";
     cout << "Testing PostFixCalculator:\n";
     Test::testPostFixCalculator();
-    cout << "\n\nTest PostFixCalculator Manually:\n";
+    cout << "--------------------------\n";
+    cout << "Test PostFixCalculator Manually\n";
     for (;;) {
         try {
             string equation;

@@ -40,7 +40,7 @@ public:
     }
 
     /**
-     * Destructor (unique_ptr handles memory deallocation).
+     * Destructor
      */
     ~Queue() = default;
 
@@ -48,7 +48,7 @@ public:
      * Returns true if the queue is empty, false otherwise.
      * @return true if empty; false otherwise.
      */
-    bool IsEmpty() const {
+    [[nodiscard]] bool IsEmpty() const {
         return m_Size == 0;
     }
 
@@ -56,7 +56,7 @@ public:
      * Returns true if the queue is full, false otherwise.
      * @return true if full; false otherwise.
      */
-    bool IsFull() const {
+    [[nodiscard]] bool IsFull() const {
         return m_Size == m_MaxSize;
     }
 
@@ -80,7 +80,7 @@ public:
      * @param new_value The integer value to enqueue.
      * @return true if the element was added; false if the queue is full.
      */
-    bool Enqueue(int new_value) {
+    bool Enqueue(const int new_value) {
         if (m_Size == m_MaxSize)
             return false;
         m_Data[(m_First + m_Size) % m_MaxSize] = new_value;

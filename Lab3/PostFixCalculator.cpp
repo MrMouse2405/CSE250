@@ -35,8 +35,8 @@ double PostFixCalculator(const std::string &equation) {
             auto val1 = stack.Pop();
             assert(val1.has_value() && val2.has_value() && "Stack has less than 2 values");
 
-            double operand1 = val1.value();
-            double operand2 = val2.value();
+            const double operand1 = val1.value();
+            const double operand2 = val2.value();
             double result = 0.0;
 
             if (token == "+") {
