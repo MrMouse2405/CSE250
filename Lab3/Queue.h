@@ -1,49 +1,104 @@
-/****************************************************************************\
+/******************************************************************************
  * Queue.h
  *
- *  Created on:
- *      Author: YOUR NAME
+ *  Created on: Feb 07 2025
+ *      Author: OCdt Syed
  *
+ *  Implementation details:
+ *      A fixed-size queue of integers using a circular buffer.
  *
- *  Implementation details: ?
- *
- \***************************************************************************/
+ ******************************************************************************/
 
 #pragma once
 #include <memory>
+#include <iostream>
 
-/** Queue of integers using an array. */
-class Queue
-{
-
+/**
+ * A fixed-size queue of integers implemented with a circular buffer.
+ */
+class Queue {
 private:
-	/** Array used as a circular buffer for queue content. */
-	const std::unique_ptr<int[]> m_Data;
-	/** Size of the circular buffer. */
-	const std::size_t m_MaxSize;
-	/** TODO PLEASE DESCRIBE */
-	std::size_t m_First;
-	/** TODO PLEASE DESCRIBE */
-	std::size_t size;
-	// TODO: Add other instance variables or helper methods if needed
+    /** Maximum number of elements in the queue. */
+    const std::size_t m_MaxSize;
+    /** The circular buffer holding the queue elements. */
+    std::unique_ptr<int[]> m_Data;
+    /** Index of the front element in the queue. */
+    std::size_t m_First;
+    /** Current number of elements in the queue. */
+    std::size_t m_Size;
 
 public:
-	/** Constructs an empty queue of maximum size new_max_size */
-	explicit Queue(std::size_t new_max_size);
-	/** Deletes the queue and free up its memory. */
-	virtual ~Queue();
+    /**
+     * Constructs a queue with the given maximum size.
+     * @param new_max_size The maximum number of elements.
+     */
+    explicit Queue(std::size_t new_max_size)
+        : m_MaxSize(new_max_size),
+          m_Data(new int[new_max_size]),
+          m_First(0),
+          m_Size(0) {
+    }
 
-	/** Indicates whether of not the queue is empty in O(1), true if empty, false if not. */
-	bool IsEmpty();
-	/** Indicates whether of not the queue is full in O(1), true if full, false if not. */
-	bool IsFull();
+    /**
+     * Destructor (unique_ptr handles memory deallocation).
+     */
+    ~Queue() = default;
 
-	/** Prints the content of the queue on a single line, separated by comma, eg: [3, 19, 2, 36]. */
-	void PrintQueue();
+    /**
+     * Returns true if the queue is empty, false otherwise.
+     * @return true if empty; false otherwise.
+     */
+    bool IsEmpty() const {
+        return m_Size == 0;
+    }
 
-	/** Inserts an element at the end of the queue, returns true if succeed, and false if the queue is already full. */
-	bool Enqueue(int new_value);
-	/** Removes the element at the front of the queue and returns the element in the argument,
-	 * returns true if succeed, and false if the queue is already full.  */
-	bool Dequeue(int &old_value);
+    /**
+     * Returns true if the queue is full, false otherwise.
+     * @return true if full; false otherwise.
+     */
+    bool IsFull() const {
+        return m_Size == m_MaxSize;
+    }
+
+    /**
+     * Prints the contents of the queue in a single line (e.g., [3,19,2,36]).
+     */
+    void PrintQueue() const {
+        if (m_Size == 0) {
+            std::cout << "[]" << std::endl;
+            return;
+        }
+        std::cout << "[";
+        for (std::size_t i = 0; i < m_Size - 1; i++) {
+            std::cout << m_Data[(m_First + i) % m_MaxSize] << ",";
+        }
+        std::cout << m_Data[(m_First + m_Size - 1) % m_MaxSize] << "]" << std::endl;
+    }
+
+    /**
+     * Enqueues a new element at the end of the queue.
+     * @param new_value The integer value to enqueue.
+     * @return true if the element was added; false if the queue is full.
+     */
+    bool Enqueue(int new_value) {
+        if (m_Size == m_MaxSize)
+            return false;
+        m_Data[(m_First + m_Size) % m_MaxSize] = new_value;
+        ++m_Size;
+        return true;
+    }
+
+    /**
+     * Dequeues the front element of the queue.
+     * @param old_value A reference to store the removed element.
+     * @return true if successful; false if the queue is empty.
+     */
+    bool Dequeue(int &old_value) {
+        if (m_Size == 0)
+            return false;
+        old_value = m_Data[m_First];
+        m_First = (m_First + 1) % m_MaxSize;
+        --m_Size;
+        return true;
+    }
 };
