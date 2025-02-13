@@ -59,8 +59,7 @@ void simulation() {
             }
             member++;
         } else {
-            int removedMember;
-            if (queue.Dequeue(removedMember)) {
+            if (int removedMember; queue.Dequeue(removedMember)) {
                 printQueueStep(queue, "Processing #" + to_string(removedMember) + " successfully");
             } else {
                 printQueueStep(queue, "Queue Empty; Processing Failed");

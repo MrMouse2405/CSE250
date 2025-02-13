@@ -23,7 +23,7 @@ namespace Test {
      * @param expected The expected output string.
      */
     template<typename F>
-    inline void testOutput(F &&lambda, const std::string &expected) {
+    void testOutput(F &&lambda, const std::string &expected) {
         using namespace std;
         std::ostringstream oss; /** Use a non-const ostringstream so output can be captured. */
         std::streambuf *oldBuf = std::cout.rdbuf();

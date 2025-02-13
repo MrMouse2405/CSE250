@@ -61,6 +61,6 @@ double PostFixCalculator(const std::string &equation) {
         }
     }
 
-    auto finalVal = stack.Pop();
+    const auto finalVal = stack.Pop();
     return finalVal.value_or(0);
 }
