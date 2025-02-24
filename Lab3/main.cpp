@@ -5,8 +5,6 @@
  *  Updated on: Feb 13 2025
  *      Author: OCdt Syed
  *
- *  Implementation details:
- *      Main program to test the Queue, LinkedList, Stack, and PostFixCalculator.
  *
  ******************************************************************************/
 

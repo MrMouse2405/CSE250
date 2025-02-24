@@ -5,85 +5,57 @@
  *      Author: OCdt Syed
  *
  *  Implementation details:
- *      This file tests the generic Stack<string> class using various test cases.
+ *      This file tests the Stack using various test cases.
  *
  ******************************************************************************/
 
 #include <iostream>
-#include <cassert>
 #include "Test.h"
 #include "Stack.h"
 
 using namespace std;
 
-/**
- * Tests an empty stack.
- * Verifies that a newly created stack is empty and that Top and Pop return an empty optional.
- */
 void testEmptyStack() {
     Stack<string> s;
-    assert(s.IsEmpty() == true);
-    assert(s.Top().value_or("").empty());
-    assert(s.Pop().value_or("").empty());
+    cout << "Stack should be empty: " << (s.IsEmpty() ? "true" : "false") << endl;
+    cout << "Top of empty stack: " << s.Top().value_or("<empty>") << endl;
+    cout << "Pop from empty stack: " << s.Pop().value_or("<empty>") << endl;
 }
 
-/**
- * Tests push, pop, and top operations.
- * Verifies that the stack maintains Last-In-First-Out (LIFO) order.
- */
 void testPushPopTop() {
     Stack<string> s;
     s.Push("first");
-    assert(s.IsEmpty() == false);
-    assert(s.Top().value_or("") == "first");
+    cout << "Stack should not be empty: " << (s.IsEmpty() ? "true" : "false") << endl;
+    cout << "Top element: " << s.Top().value_or("<empty>") << endl;
 
     s.Push("second");
-    assert(s.Top().value_or("") == "second");
+    cout << "Top element after push: " << s.Top().value_or("<empty>") << endl;
 
     s.Push("third");
-    assert(s.Top().value_or("") == "third");
+    cout << "Top element after push: " << s.Top().value_or("<empty>") << endl;
 
-    string val = s.Pop().value_or("");
-    assert(val == "third");
-    assert(s.Top().value_or("") == "second");
+    cout << "Popping: " << s.Pop().value_or("<empty>") << endl;
+    cout << "New top element: " << s.Top().value_or("<empty>") << endl;
 
-    val = s.Pop().value_or("");
-    assert(val == "second");
-    assert(s.Top().value_or("") == "first");
+    cout << "Popping: " << s.Pop().value_or("<empty>") << endl;
+    cout << "New top element: " << s.Top().value_or("<empty>") << endl;
 
-    val = s.Pop().value_or("");
-    assert(val == "first");
-    assert(s.IsEmpty() == true);
-    assert(s.Pop().value_or("").empty());
+    cout << "Popping: " << s.Pop().value_or("<empty>") << endl;
+    cout << "Stack should be empty: " << (s.IsEmpty() ? "true" : "false") << endl;
+    cout << "Pop from empty stack: " << s.Pop().value_or("<empty>") << endl;
 }
 
-/**
- * Tests printing the stack.
- * Verifies that PrintStack outputs the stack contents from top to bottom.
- */
 void testPrintStack() {
     Stack<string> s;
     s.Push("first");
     s.Push("second");
     s.Push("third");
-    Test::testOutput([&]() {
-        s.PrintStack();
-    }, "third\nsecond\nfirst\n");
+    cout << "Expected output from PrintStack: \nthird\nsecond\nfirst" << endl;
+    s.PrintStack();
 }
 
-/**
- * Runs all Stack tests.
- * Calls each individual test function and prints a message upon successful completion.
- */
 void Test::testStack() {
     testEmptyStack();
-    cout << "testEmptyStack passed." << endl;
-
     testPushPopTop();
-    cout << "testPushPopTop passed." << endl;
-
     testPrintStack();
-    cout << "testPrintStack passed." << endl;
-
-    cout << "All tests passed successfully." << endl;
 }

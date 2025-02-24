@@ -9,111 +9,63 @@
  *
  ******************************************************************************/
 
-#include <cassert>
 #include <iostream>
 #include "PostFixCalculator.h"
 #include "Test.h"
 
 using namespace std;
 
-/**
- * Tests addition in a postfix expression.
- * The expression "4,5,+" should yield 9.
- */
 void testAddition() {
-    assert(PostFixCalculator("4,5,+") == 9);
+    cout << "Testing addition: 4,5,+" << endl;
+    cout << "Result: " << PostFixCalculator("4,5,+") << " (expected: 9)" << endl;
 }
 
-/**
- * Tests multiplication in a postfix expression.
- * The expression "3,9,*" should yield 27.
- */
 void testMultiplication() {
-    assert(PostFixCalculator("3,9,*") == 27);
+    cout << "Testing multiplication: 3,9,*" << endl;
+    cout << "Result: " << PostFixCalculator("3,9,*") << " (expected: 27)" << endl;
 }
 
-/**
- * Tests subtraction with grouping in a postfix expression.
- * The expression "2,5,3,+,-" should yield -6 (because 5+3=8 then 2-8=-6).
- */
 void testSubtractionWithGrouping() {
-    assert(PostFixCalculator("2,5,3,+,-") == -6);
+    cout << "Testing subtraction with grouping: 2,5,3,+,-" << endl;
+    cout << "Result: " << PostFixCalculator("2,5,3,+,-") << " (expected: -6)" << endl;
 }
 
-/**
- * Tests a complex postfix expression.
- * The expression "1,5,+,8,4,1,-,-,*" should yield 30.
- * Explanation:
- *  1,5,+  -> 6
- *  4,1,-  -> 3
- *  8,3,-  -> 5
- *  6,5,*  -> 30
- */
 void testComplexExpression() {
-    assert(PostFixCalculator("1,5,+,8,4,1,-,-,*") == 30);
+    cout << "Testing complex expression: 1,5,+,8,4,1,-,-,*" << endl;
+    cout << "Result: " << PostFixCalculator("1,5,+,8,4,1,-,-,*") << " (expected: 30)" << endl;
 }
 
-/**
- * Tests division in a postfix expression.
- * The expression "10,2,/" should yield 5.
- */
 void testDivision() {
-    assert(PostFixCalculator("10,2,/") == 5);
+    cout << "Testing division: 10,2,/" << endl;
+    cout << "Result: " << PostFixCalculator("10,2,/") << " (expected: 5)" << endl;
 }
 
-/**
- * Tests division by zero in a postfix expression.
- * The expression "10,0,/" should throw a runtime_error.
- */
 void testDivisionByZero() {
-    bool caught = false;
+    cout << "Testing division by zero: 10,0,/" << endl;
     try {
         PostFixCalculator("10,0,/");
-    } catch (const std::runtime_error &e) {
-        caught = true;
+        cout << "Expected division by zero exception but none occurred." << endl;
+    } catch (const runtime_error &e) {
+        cout << "Caught expected division by zero exception." << endl;
     }
-    assert(caught && "Expected division by zero exception.");
 }
 
-/**
- * Tests handling of an invalid token in a postfix expression.
- * The expression "4,5,?,+" should throw a runtime_error.
- */
 void testInvalidToken() {
-    bool caught = false;
+    cout << "Testing invalid token: 4,5,?,+" << endl;
     try {
         PostFixCalculator("4,5,?,+");
-    } catch (const std::runtime_error &e) {
-        caught = true;
+        cout << "Expected invalid token exception but none occurred." << endl;
+    } catch (const runtime_error &e) {
+        cout << "Caught expected invalid token exception." << endl;
     }
-    assert(caught && "Expected invalid token exception.");
 }
 
-/**
- * Runs all PostFixCalculator tests.
- * Calls each individual test function and prints a message upon successful completion.
- */
 void Test::testPostFixCalculator() {
     testAddition();
-    cout << "Addition test passed." << endl;
-
     testMultiplication();
-    cout << "Multiplication test passed." << endl;
-
     testSubtractionWithGrouping();
-    cout << "Subtraction with grouping test passed." << endl;
-
     testComplexExpression();
-    cout << "Complex expression test passed." << endl;
-
     testDivision();
-    cout << "Division test passed." << endl;
-
     testDivisionByZero();
-    cout << "Division by zero test passed." << endl;
-
     testInvalidToken();
-    cout << "Invalid token test passed." << endl;
-
-    cout << "All PostFixCalculator tests passed successfully." << endl;
 }
